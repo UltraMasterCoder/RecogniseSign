@@ -10,6 +10,7 @@ for L = 1:nGTLabels
     maxDSC = 0;
     maxIDX = -1;
     GTL = (GT == L);
+    % comment mkmk
     
     % Find the label with maximum dice score compare to GT label
     for Lin = 1:nInLabels
