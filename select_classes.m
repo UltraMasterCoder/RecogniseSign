@@ -1,4 +1,4 @@
-function LabelMap = MyDTUSignFinder(I)
+
 
 % Show image
 I = imread('DTUSignPhotos/DTUSigns003.jpg');
