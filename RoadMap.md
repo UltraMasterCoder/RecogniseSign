@@ -1,4 +1,4 @@
-#Strategy
+# Strategy
 
 1. Read Image & standardize  
 2. Highlight different classes  
