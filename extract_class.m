@@ -30,7 +30,7 @@
 %    window.
 % 4. All values of the class are stored in one file in the directory
 %    "class_values". The filename contains the class number.
-class_num = 1;
+class_num = 2;
 
 all_red_vals = [];
 all_green_vals = [];
