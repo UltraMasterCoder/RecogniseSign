@@ -5,12 +5,13 @@
 % 3: cobblestone
 % 4: green nature
 % 5: sky
-% 6: grey wall
+% 6: lightgrey wall
+
 
 % probably a separate class. Just if the classifiers perform not good
 % enough.
-% x: blue sign
 % x: brown nature
+% x: blue sign
 
 % #####Description#####
 % This script helps you to label one particular class in each of our
@@ -30,13 +31,12 @@
 %    window.
 % 4. All values of the class are stored in one file in the directory
 %    "class_values". The filename contains the class number.
-class_num = 2;
+class_num = 6;
 
 all_red_vals = [];
 all_green_vals = [];
 all_blue_vals = [];
-% im_numbers = [1:2:67];  % All Images
-im_numbers = [1:2:4];
+im_numbers = [1:2:67];  % All Images
 output_file = sprintf('class_values/class_%d.mat',class_num);
 
 for im_num = im_numbers
