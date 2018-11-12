@@ -110,6 +110,3 @@ for class = 1: (n_class-1)
     end
 
 end
-
-
-        

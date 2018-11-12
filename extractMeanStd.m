@@ -1,4 +1,4 @@
-function [meanVar,stdVar] = extractMeanStd( class_val)
+function [meanVar,stdVar] = extractMeanStd(class_val)
 %EXTRACTMEANSTD Summary of this function goes here
 %   Detailed explanation goes here
     dim = size(class_val) ; 
