@@ -7,8 +7,9 @@ function [meanVar,stdVar] = extractMeanStd( class_val)
     
     for class =1:dim(3) 
         for RGB = 1:3
-            meanTemp(class,RGB) = mean(double(class_val(:,RGB,class))) ;
-            stdTemp(class,RGB) = std(double(class_val(:,RGB,class))) ; 
+            n = nnz(class_val(:,RGB,class));
+            meanTemp(class,RGB) = mean(double(class_val(1:n,RGB,class))) ;
+            stdTemp(class,RGB) = std(double(class_val(1:n,RGB,class))) ; 
         end 
         
     end 
