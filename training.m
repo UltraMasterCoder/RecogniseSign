@@ -46,6 +46,6 @@ set(h(2),'FaceColor','g','EdgeColor','g','FaceAlpha',0.3,'EdgeAlpha',0.3);
 set(h(1),'FaceColor','b','EdgeColor','b','FaceAlpha',0.3,'EdgeAlpha',0.3);
 xlim([0 255]);
 
-ISigns = Ired > 150 & Ired < 200  & Igreen > 45 & Igreen < 80 & Iblue > 60 & Iblue < 100;
+ISigns = Ired > 117 & Ired < 255  & Igreen > 0 & Igreen < 105 & Iblue > 0 & Iblue < 115;
 figure;
 imshow(ISigns);

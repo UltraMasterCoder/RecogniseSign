@@ -2,7 +2,7 @@
 clear; close all; clc;
 
 % What image number are you testing
-nSign = 9;
+nSign = 37;
  
 ImageName = sprintf('DTUSignPhotos/DTUSigns%03d.jpg', nSign);
 LMName    = sprintf('DTUSignPhotos/DTUSigns%03d.txt', nSign);
@@ -29,6 +29,7 @@ nGTLabels = max(max(LabelMap));
 CDSC = CombinedDiceScore(MyMap, LabelMap);
 str=sprintf('Combined DICE score %g with %g labels. There are %g GT labels', CDSC, nLabels, nGTLabels)
 
+figure;
 subplot(2,2,1); imshow(I);  title('Input image')
 subplot(2,2,3);imagesc(RGBLabels); axis image; title('Ground truth signs')
 subplot(2,2,4);imagesc(RGBMyLabels); axis image; title('Found sign candidates')
