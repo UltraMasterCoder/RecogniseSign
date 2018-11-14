@@ -1,7 +1,7 @@
 % function LabelMap = MyDTUSignFinder(I)
 
 % Show image
-I = imread('DTUSignPhotos/DTUSigns003.jpg');
+I = imread('DTUSignPhotos/DTUSigns0.jpg');
 
 % select sign
 % DTUSROI = roipoly(I);
@@ -11,6 +11,9 @@ I = imread('DTUSignPhotos/DTUSigns003.jpg');
 
 % % show hist
 % imhist(I);
+I_orig = I;
+I_norm = double(I)./255;
+I = rgb2hsv(I_norm);
 Ired   = I(:,:,1);
 Igreen = I(:,:,2);
 Iblue  = I(:,:,3);
@@ -52,7 +55,9 @@ Iblue  = I(:,:,3);
 
 % RGB Threshold
 % TODO: This can be done better
-ISigns = Ired > 117 & Ired < 255  & Igreen > 0 & Igreen < 105 & Iblue > 0 & Iblue < 115;
+% ISigns = Ired > 117 & Ired < 255  & Igreen > 0 & Igreen < 120 & Iblue > 0 & Iblue < 135;
+% HSI Threshold
+ISigns = Igreen > 0.5 & Igreen < 0.8 & Iblue > 0.35 & Iblue < 1;
 
 % TODO: Here should be a lot of intelligent code to extract signs
 % For example morphological operations and BLOB analysis
@@ -88,7 +93,7 @@ Imorph23 = imclose(Imorph22, se23);
 
 figure;
 subplot(3,4,1);
-imshow(I);
+imshow(I_orig);
 title('Original');
 subplot(3,4,2);
 imshow(ISigns);
