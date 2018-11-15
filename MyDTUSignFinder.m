@@ -1,82 +1,40 @@
 % function LabelMap = MyDTUSignFinder(I)
+%% start
 close all;
-clear all;
+clear ;
 clc;
+%% load image
+% load image (DEBUG)
+Irgb = imread('DTUSignPhotos/DTUSigns037.jpg');
+%% pixel classification
+% we make our image into a NTSC image(luminance, chrominance, and color
+% components )
+Intsc = rgb2ntsc(Irgb);
+Ilum   = Intsc(:,:,1);
+Ichr = Intsc(:,:,2);
+Icom  = Intsc(:,:,3);
 
-% Show image
-I = imread('DTUSignPhotos/DTUSigns003.jpg');
-
-% select sign
-% DTUSROI = roipoly(I);
-% imwrite(DTUSROI, 'DTUSROI.png');
-% %DTUSROI = imread('DTUSROI.png');
-% DTUSVals = double(I(DTUSROI));
-
-% % show hist
-% imhist(I);
-I_orig = I;
-% I_norm = double(I)./255;
-% I = rgb2hsv(I_norm);
-I = rgb2ntsc(I);
-Ired   = I(:,:,1);
-Igreen = I(:,:,2);
-Iblue  = I(:,:,3);
-% DTUSredVals = double(Ired(DTUSROI));
-% DTUSgreenVals = double(Igreen(DTUSROI));
-% DTUSblueVals = double(Iblue(DTUSROI));
-
-% inspect the combined histogram of the R, G, B values.
-% figure;
-% totVals = [DTUSredVals DTUSgreenVals DTUSblueVals];
-% nbins = 255;
-% hist(totVals,nbins);
-% h = findobj(gca,'Type','patch');
-% set(h(3),'FaceColor','r','EdgeColor','r','FaceAlpha',0.3,'EdgeAlpha',0.3);
-% set(h(2),'FaceColor','g','EdgeColor','g','FaceAlpha',0.3,'EdgeAlpha',0.3);
-% set(h(1),'FaceColor','b','EdgeColor','b','FaceAlpha',0.3,'EdgeAlpha',0.3);
-% xlim([0 255]);
-
-% show histograms with each colour component
-% figure;
-% subplot(1,2,1);
-% imshow(I);
-% title('original Image');
-% 
-% subplot(3,2,2);
-% hist(DTUSredVals,255);
-% xlim([0 255]);
-% title('red Values');
-% 
-% subplot(3,2,4);
-% hist(DTUSgreenVals,255);
-% xlim([0 255]);
-% title('green Values');
-% 
-% subplot(3,2,6);
-% hist(DTUSblueVals,255);
-% xlim([0 255]);
-% title('blue Values');
-
-% RGB Threshold
-% TODO: This can be done better
-% ISigns = Ired > 117 & Ired < 255  & Igreen > 0 & Igreen < 120 & Iblue > 0 & Iblue < 135;
-% HSI Threshold
+% RGB threshold
 % ISigns = Igreen > 0.5 & Igreen < 0.8 & Iblue > 0.35 & Iblue < 1;
-ISigns = Iblue > 0.04 & Igreen >0.12;
-% TODO: Here should be a lot of intelligent code to extract signs
-% For example morphological operations and BLOB analysis
+
+% NTSC Threshold
+ISigns = Icom > 0.04 & Ichr >0.12;
+% we remove the letters with a matlab filling function
+ISigns = imfill(ISigns,'holes') ;
 
 %% Morphology operations
 % Binary operations to remove small objects
-se1 = strel('square',10);
+se1 = strel('square',10); % perhaps this should be 30 ???
 se2 = strel('rectangle',[3 5]);
 Imorph1 = imopen(ISigns, se1);
 Imorph2 = imopen(ISigns, se2);
 
+% it seems that Imorph1 has better performace 
+
 % se12 = strel('square',10);
 % se22 = strel('rectangle',[5 10]);
 % Imorph12 = imclose(Imorph1, se12);
-% Imorph22 = imclose(Imorph2, se22);
+% Imorph22 = imclose(Imorph2, se22);    
 
 %% Blob extraction
 
@@ -154,7 +112,7 @@ Imorph25 = ismember(Imorph24, idx23);
 
 figure;
 subplot(3,4,1);
-imshow(I_orig);
+imshow(Irgb);
 title('Original');
 subplot(3,4,2);
 imshow(ISigns);
@@ -167,7 +125,7 @@ imshow(Imorph2);
 title('Rectangle');
 
 subplot(3,4,5);
-imshow(I);
+imshow(Intsc);
 title('Original');
 subplot(3,4,6);
 imshow(ISigns);
