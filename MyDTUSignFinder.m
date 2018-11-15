@@ -1,7 +1,7 @@
 % function LabelMap = MyDTUSignFinder(I)
 
 % Show image
-I = imread('DTUSignPhotos/DTUSigns0.jpg');
+I = imread('DTUSignPhotos/DTUSigns001.jpg');
 
 % select sign
 % DTUSROI = roipoly(I);
@@ -12,14 +12,13 @@ I = imread('DTUSignPhotos/DTUSigns0.jpg');
 % % show hist
 % imhist(I);
 I_orig = I;
-I_norm = double(I)./255;
-I = rgb2hsv(I_norm);
-Ired   = I(:,:,1);
-Igreen = I(:,:,2);
-Iblue  = I(:,:,3);
-% DTUSredVals = double(Ired(DTUSROI));
-% DTUSgreenVals = double(Igreen(DTUSROI));
-% DTUSblueVals = double(Iblue(DTUSROI));
+I = rgb2ntsc(I_orig);
+Iy   = I(:,:,1);
+Ichrom = I(:,:,2);
+Icolor  = I(:,:,3);
+% DTUSredVals = double(Iy(DTUSROI));
+% DTUSgreenVals = double(Ichrom(DTUSROI));
+% DTUSblueVals = double(Icolor(DTUSROI));
 
 % inspect the combined histogram of the R, G, B values.
 % figure;
@@ -53,11 +52,10 @@ Iblue  = I(:,:,3);
 % xlim([0 255]);
 % title('blue Values');
 
-% RGB Threshold
+% NTSC Threshold
 % TODO: This can be done better
-% ISigns = Ired > 117 & Ired < 255  & Igreen > 0 & Igreen < 120 & Iblue > 0 & Iblue < 135;
-% HSI Threshold
-ISigns = Igreen > 0.5 & Igreen < 0.8 & Iblue > 0.35 & Iblue < 1;
+ISigns = Iblue > 0.04 & Igreen > 0.12;
+
 
 % TODO: Here should be a lot of intelligent code to extract signs
 % For example morphological operations and BLOB analysis
@@ -72,6 +70,11 @@ Imorph2 = imopen(ISigns, se2);
 % se22 = strel('rectangle',[5 10]);
 % Imorph12 = imclose(Imorph1, se12);
 % Imorph22 = imclose(Imorph2, se22);
+
+Fill holes in signd (Text)
+Imorph1 = imfill(Imorph1,'holes');
+Imorph2 = imfill(Imorph2,'holes');
+
 
 Imorph12 = bwlabel(Imorph1,4);
 props12 = regionprops(Imorph12, 'Area');
