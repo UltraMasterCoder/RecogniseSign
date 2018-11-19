@@ -25,14 +25,12 @@ for N = 1:length(validationSet)
     
     Ilabel = LabelMap;
     
-     p1 = regionprops(Ilabel, 'Perimeter');
-    perim1 = [p1.Perimeter];
-    areaProps = regionprops(Ilabel, 'Area');
-    area1 = [areaProps.Area];
-    for i = 1:length(perim1)
-        circ1(i,N) = (2*sqrt(pi*area1(i)))/perim1(i);
-    end
+%     areaProps = regionprops(Ilabel, 'Area');
+    bbProps = regionprops(Ilabel, 'Orientation');
     
+    for i = 1:length(bbProps)
+        comp1(i,N) = bbProps(i).Orientation;
+    end
    
 end
 

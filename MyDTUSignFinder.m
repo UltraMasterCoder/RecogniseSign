@@ -60,8 +60,7 @@ function LabelMap = MyDTUSignFinder(Irgb)
         circ1(i) = (2*sqrt(pi*area1(i)))/perim1(i);
     end
     Ilabel = bwlabel(Iclosed2,4);
-    idxCirc1 = find(circ1 < 0.85);
-%     idxCirc1 = find((circ1 < 0.9)  & (circ1 > 0.55) );
+    idxCirc1 = find((circ1 < 0.9)  & (circ1 > 0.55) );
     Icirc1 = ismember(Ilabel, idxCirc1);
 
 
@@ -89,38 +88,46 @@ function LabelMap = MyDTUSignFinder(Irgb)
 
     idx13 = find((transpose(bbr11) < 0.5 & transpose(bbr11) > 0.13) | (transpose(bbr11) < 1.7 & transpose(bbr11) > 1.5));
     Ibbox1 = ismember(Ilabel, idx13);
+    
+    %% Applying 'Orientation'
+    Ilabel = bwlabel(Ibbox1,4);
+    orientation1 = regionprops(Ilabel,'Orientation');
+    orientation1 = [orientation1.Orientation];
+
+    idx13 = find(((orientation1 > -20) & (orientation1 < 20)) | ((orientation1 > 70) & (orientation1 < 110)));
+    Ibbox1 = ismember(Ilabel, idx13);
 
 
-    figure;
-    subplot(3,4,1);
-    imshow(Irgb);
-    title('Original');
-    subplot(3,4,2);
-    imshow(ISigns);
-    title('Pixel classified');
-    subplot(3,4,3);
-    imshow(Iopened1);
-    title('Opening');
-    subplot(3,4,4);
-    imshow(Iborder);
-    title('Border');
-
-    subplot(3,4,5);
-    imshow(Iarea1);
-    title('BLOB Area');
-    subplot(3,4,6);
-    imshow(Iclosed2);
-    title('Closing');
-    subplot(3,4,7);
-    imshow(Icirc1);
-    title('BLOB Circularity');
-    subplot(3,4,8);
-    imshow(Icomp1);
-    title('BLOB Compactness');
-
-    subplot(3,4,9);
-    imshow(Ibbox1);
-    title('BLOB BBRatio');
+%     figure;
+%     subplot(3,4,1);
+%     imshow(Irgb);
+%     title('Original');
+%     subplot(3,4,2);
+%     imshow(ISigns);
+%     title('Pixel classified');
+%     subplot(3,4,3);
+%     imshow(Iopened1);
+%     title('Opening');
+%     subplot(3,4,4);
+%     imshow(Iborder);
+%     title('Border');
+% 
+%     subplot(3,4,5);
+%     imshow(Iarea1);
+%     title('BLOB Area');
+%     subplot(3,4,6);
+%     imshow(Iclosed2);
+%     title('Closing');
+%     subplot(3,4,7);
+%     imshow(Icirc1);
+%     title('BLOB Circularity');
+%     subplot(3,4,8);
+%     imshow(Icomp1);
+%     title('BLOB Compactness');
+% 
+%     subplot(3,4,9);
+%     imshow(Ibbox1);
+%     title('BLOB BBRatio');
 
     % Blob extraction for output
     L8 = bwlabel(Ibbox1,8);
