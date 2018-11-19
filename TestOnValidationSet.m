@@ -2,10 +2,12 @@
 %% Test your own function on a validation set
 clear; close all; clc;
 % What image number are you testing
-validationSet = [1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67]
+validationSet = [1 3 5 7 9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45 47 49 51 53 55 57 59 61 63 65 67];
 
 % Gather the dice score
 DSCScores = [];
+sum_ground_truth = 0;
+sum_labels_found = 0;
 
 for N = 1:length(validationSet)
     % Current sign id
@@ -34,17 +36,29 @@ for N = 1:length(validationSet)
     CDSC = CombinedDiceScore(MyMap, LabelMap);
     DSCScores = [DSCScores, CDSC];
     str=sprintf('Photo %d Combined DICE score %g with %g found labels. There are %g GT labels', nSign, CDSC, nLabels, nGTLabels)
-
-    figure;
-    subplot(2,2,1); imshow(I);  title('Input image')
-    subplot(2,2,3);imagesc(RGBLabels); axis image; title('Ground truth signs')
-    subplot(2,2,4);imagesc(RGBMyLabels); axis image; title('Found sign candidates')
-    %figure, imagesc(RGBMyLabels); axis image; title('Found sign candidates')
-    %figure, imagesc(RGBLabels); axis image; title('Ground truth signs')
-    annotation('textbox', [0.05 0.26 0.3 0.3],'String', str,'FitBoxToText', 'on');
+    
+    sum_ground_truth = sum_ground_truth + nGTLabels;
+    sum_labels_found = sum_labels_found + nLabels;
+    
+%     figure;
+%     subplot(2,2,1); imshow(I);  title('Input image')
+%     subplot(2,2,3);imagesc(RGBLabels); axis image; title('Ground truth signs')
+%     subplot(2,2,4);imagesc(RGBMyLabels); axis image; title('Found sign candidates')
+%     %figure, imagesc(RGBMyLabels); axis image; title('Found sign candidates')
+%     %figure, imagesc(RGBLabels); axis image; title('Ground truth signs')
+%     annotation('textbox', [0.05 0.26 0.3 0.3],'String', str,'FitBoxToText', 'on');
 end
 
 % What is the mean score
 mean(DSCScores)
+sum_false_positives = sum_labels_found - sum_ground_truth;
+
+str=sprintf('Total number of signs: %g', sum_ground_truth)
+str=sprintf('signs found : %g', sum_labels_found)
+str=sprintf('False positives:  %g', sum_labels_found - sum_ground_truth)
+
+
+
+
 
 

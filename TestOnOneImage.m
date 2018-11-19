@@ -2,7 +2,7 @@
 clear; close all; clc;
 
 % What image number are you testing
-nSign = 9;
+nSign = 33;
  
 ImageName = sprintf('DTUSignPhotos/DTUSigns%03d.jpg', nSign);
 LMName    = sprintf('DTUSignPhotos/DTUSigns%03d.txt', nSign);
