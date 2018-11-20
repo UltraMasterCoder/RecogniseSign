@@ -22,19 +22,16 @@ function LabelMap = SignTinder(Irgb)
     %% Morphology operations
     % Binary operations to remove small objects
     se_open1 = strel('square',10); % perhaps this should be 30 ???
-    % se_open1 = strel('rectangle',[3 5]);
+%     se_open1 = strel('rectangle',[3 5]);
     Iopened1 = imopen(ISigns, se_open1);
 
-    % it seems that Imorph1 has better performace 
-
-    % se_close1 = strel('square',10);
-    % se_close1 = strel('rectangle',[5 10]);
-    % Iclosed1 = imclose(Iopened1, se_close1);    
+    se_close1 = strel('rectangle',[5 10]);
+    Iclosed1 = imclose(Iopened1, se_close1);    
 
     %% Blob extraction
 
     %% Applying 'Area'
-    Ilabel = bwlabel(Iopened1,4);
+    Ilabel = bwlabel(Iclosed1,4);
     % Remove object from the border
     Iborder = imclearborder(Ilabel);
 
@@ -43,11 +40,9 @@ function LabelMap = SignTinder(Irgb)
     idx12 = find(area1 > 2640);
     Iarea1 = ismember(Iborder, idx12);
     area1 = area1(find(area1 > 2640));
-    % Imorph12 = label2rgb(bwlabel(Iarea1,4), 'spring', 'c', 'shuffle');
 
 
     se_close2 = strel('rectangle',[5 15]);
-    % se_close2 = strel('rectangle',[5 15]);
     Iclosed2 = imclose(Iarea1, se_close2);
 
     %% Applying 'Circularity'
@@ -88,48 +83,9 @@ function LabelMap = SignTinder(Irgb)
 
     idx13 = find((transpose(bbr11) < 0.5 & transpose(bbr11) > 0.13) | (transpose(bbr11) < 1.7 & transpose(bbr11) > 1.5));
     Ibbox1 = ismember(Ilabel, idx13);
-    
-    %% Applying 'Orientation'
-    Ilabel = bwlabel(Ibbox1,4);
-    orientation1 = regionprops(Ilabel,'Orientation');
-    orientation1 = [orientation1.Orientation];
-
-    idx13 = find(((orientation1 > -20) & (orientation1 < 20)) | ((orientation1 > 70) & (orientation1 < 110)));
-    Ibbox1 = ismember(Ilabel, idx13);
 
 
-%     figure;
-%     subplot(3,4,1);
-%     imshow(Irgb);
-%     title('Original');
-%     subplot(3,4,2);
-%     imshow(ISigns);
-%     title('Pixel classified');
-%     subplot(3,4,3);
-%     imshow(Iopened1);
-%     title('Opening');
-%     subplot(3,4,4);
-%     imshow(Iborder);
-%     title('Border');
-% 
-%     subplot(3,4,5);
-%     imshow(Iarea1);
-%     title('BLOB Area');
-%     subplot(3,4,6);
-%     imshow(Iclosed2);
-%     title('Closing');
-%     subplot(3,4,7);
-%     imshow(Icirc1);
-%     title('BLOB Circularity');
-%     subplot(3,4,8);
-%     imshow(Icomp1);
-%     title('BLOB Compactness');
-% 
-%     subplot(3,4,9);
-%     imshow(Ibbox1);
-%     title('BLOB BBRatio');
-
-    % Blob extraction for output
+    %% Blob extraction for output
     L8 = bwlabel(Ibbox1,8);
     % Return the raw BLOBS
     LabelMap = L8;
