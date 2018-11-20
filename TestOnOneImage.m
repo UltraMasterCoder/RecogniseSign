@@ -16,7 +16,7 @@ LabelMap = CreateLabelMapFromAnnotations(I, LM);
 RGBLabels = label2rgb(LabelMap);
 
 % Find the signs using my function
-MyMap = MyDTUSignFinder(I);
+MyMap = SignTinder(I);
 RGBMyLabels = label2rgb(MyMap);
 
 % How many labels are there in ground truth image and ground truth image

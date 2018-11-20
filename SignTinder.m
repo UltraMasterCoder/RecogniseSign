@@ -1,4 +1,4 @@
-function LabelMap = MyDTUSignFinder(Irgb)
+function LabelMap = SignTinder(Irgb)
 
     %% load image
     % load image (DEBUG)

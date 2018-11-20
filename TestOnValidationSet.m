@@ -24,7 +24,7 @@ for N = 1:length(validationSet)
     RGBLabels = label2rgb(LabelMap);
 
     % Find the signs using my function
-    MyMap = MyDTUSignFinder(I);
+    MyMap = SignTinder(I);
     RGBMyLabels = label2rgb(MyMap);
 
     nLabels = max(max(MyMap));
